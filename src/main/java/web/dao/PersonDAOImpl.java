@@ -5,31 +5,30 @@ import web.models.Person;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-@Transactional
-public class PersonDAO {
+public class PersonDAOImpl implements PersonDao {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Override
     public List<Person> index() {
         return entityManager.createQuery("FROM Person", Person.class).getResultList();
     }
 
-
+    @Override
     public Person show(int id) {
         return entityManager.find(Person.class, id);
     }
 
-    @Transactional
+    @Override
     public void save(Person person) {
         entityManager.persist(person);
     }
 
-    @Transactional
+    @Override
     public void update(int id, Person updatedPerson) {
         Person person = entityManager.find(Person.class, id);
         if (person != null) {
@@ -38,7 +37,7 @@ public class PersonDAO {
         }
     }
 
-    @Transactional
+    @Override
     public void delete(int id) {
         Person person = entityManager.find(Person.class, id);
         if (person != null) {
